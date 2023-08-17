@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1800007964127452109}
   m_Layer: 0
-  m_Name: BarrelOFun
+  m_Name: WoodenBarrel x3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,6 +39,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1800007964127452109}
     m_Modifications:
     - target: {fileID: 5267354716023930167, guid: 207cf8eaacbd88b459fac586ef18e65f,
@@ -102,6 +103,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207cf8eaacbd88b459fac586ef18e65f, type: 3}
 --- !u!4 &7167717872576165984 stripped
 Transform:
@@ -114,6 +118,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1800007964127452109}
     m_Modifications:
     - target: {fileID: 5267354716023930167, guid: 207cf8eaacbd88b459fac586ef18e65f,
@@ -177,6 +182,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207cf8eaacbd88b459fac586ef18e65f, type: 3}
 --- !u!4 &2744376793054244954 stripped
 Transform:
@@ -189,6 +197,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1800007964127452109}
     m_Modifications:
     - target: {fileID: 5267354716023930167, guid: 207cf8eaacbd88b459fac586ef18e65f,
@@ -252,6 +261,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207cf8eaacbd88b459fac586ef18e65f, type: 3}
 --- !u!4 &2060620296635937849 stripped
 Transform:

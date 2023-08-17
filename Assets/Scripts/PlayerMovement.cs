@@ -2,7 +2,6 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-    //private Transform playerBody;
     private Transform playerCam;
     private CharacterController playerCC;
     private Animator playerAnim;
@@ -10,15 +9,15 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource audioWalk;
     private FPSShooter shooter;
 
-    public bool CanMove = true;
-    public float MoveSpeed = 4f;
+    public bool canMove = true;
+    public float moveSpeed = 4f;
     public float jumpHeight = 10f;
     private float mouseX;
     private float mouseY;
     public float mouseSentitivity = 600f;
     private float xRotation = 0f;
     public bool isGrounded;
-    public float distToGround = 0.13f;
+    public float distToGround = 1f;
 
     void Start()
     {
@@ -52,16 +51,16 @@ public class PlayerMovement : MonoBehaviour
         }
         else isGrounded = true;
 
-        if(CanMove) { getMovement(); }
+        if(canMove) { getMovement(); }
     }
 
-    void StartAnim(string animState)
+    private void StartAnim(string animState)
     {
         ResetAnim();
         playerAnim.SetBool(animState, true); // Apply animation
     }
 
-    void ResetAnim()
+    private void ResetAnim()
     {
         if (isGrounded) { playerAnim.SetBool("Jumping", false); }
         playerAnim.SetBool("Running", false);
@@ -73,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         playerAnim.SetBool("Shoot_Rock", false);
     }
 
-    bool OnGround(GameObject obj)
+    private bool OnGround(GameObject obj)
     {
         if (Physics.Raycast(obj.transform.position, Vector3.down, distToGround))
         {
@@ -82,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
 
-    void getMovement()
+    private void getMovement()
     {
         Vector3 direction = Vector3.zero;
 
@@ -119,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         direction += hasJumped(direction);
-        playerCC.Move(direction * MoveSpeed * Time.deltaTime);
+        playerCC.Move(direction * moveSpeed * Time.deltaTime);
 
         if (direction == Vector3.zero)
         {
@@ -138,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
         isShooting();
     }
 
-    Vector3 hasJumped(Vector3 currentDir)
+    private Vector3 hasJumped(Vector3 currentDir)
     {
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
@@ -149,27 +148,33 @@ public class PlayerMovement : MonoBehaviour
         else return Vector3.zero;
     }
 
-    bool isShooting()
+    private bool isShooting()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            StartAnim("Shoot_Arrow");
-            audioShoot.Play();
-            shooter.ShootArrow();
+            if (shooter.ShootArrow())
+            {
+                StartAnim("Shoot_Arrow");
+                audioShoot.Play();
+            }
             return true;
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             StartAnim("Shoot_Melee");
-            audioShoot.Play();
-            shooter.MeleeHit();
+            if (shooter.MeleeHit())
+            {
+                audioShoot.Play();
+            }
             return true;
         }
         if (Input.GetKeyDown(KeyCode.Mouse2))
         {
-            StartAnim("Shoot_Rock");
-            audioShoot.Play();
-            shooter.ShootRock();
+            if (shooter.ShootRock())
+            {
+                StartAnim("Shoot_Rock");
+                audioShoot.Play();
+            }
             return true;
         }
         return false;

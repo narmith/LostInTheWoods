@@ -2,79 +2,73 @@
 
 public class ZombieMovement : MonoBehaviour
 {
-    FPSShooter shooter;
-    public float movSpeed = 4;
-    private float x;
-    private float z;
-    //private float gravity = -10f;
-    //public float fallVelocity;
-    CharacterController EnemyCC;
-    public Transform EnemyBody;
-    private Vector3 move;
-    private Animator anim;
+    private GameObject enemyTarget;
+    private CharacterController enemyCC;
+    private Animator enemyAnim;
+    public AudioSource audioShoot;
+    public AudioSource audioWalk;
+    private FPSShooter shooter;
 
-    //private bool isFiring;
-    public bool enemyFollows = true;
-    public GameObject enemyTarget;
+    //public bool enemyFollows = true;
+    public bool canMove = true;
+    public float movSpeed = 4f;
+    public float jumpHeight = 10f;
+    public bool isGrounded;
+    public float distToGround = 0.13f;
 
     void Start()
     {
-        EnemyCC = GetComponent<CharacterController>();
-        anim = GetComponent<Animator>();
+        enemyCC = GetComponent<CharacterController>();
+        enemyAnim = GetComponent<Animator>();
         shooter = GetComponent<FPSShooter>();
-        //isFiring = false;
     }
 
-    /*
-    void FixedUpdate()
-    {
-        //GRAVITY CHECK
-        if (!EnemyCC.isGrounded)
-        {
-            fallVelocity += gravity * Time.deltaTime;
-            EnemyCC.Move(new Vector3(0, fallVelocity * Time.deltaTime, 0));
+    void FixedUpdate() { }
 
-            if (EnemyCC.isGrounded)
-            {
-                fallVelocity = 0;
-            }
+    void LateUpdate()
+    {
+        if (!OnGround(this.gameObject))
+        {
+            isGrounded = false;
+            //enemyAnim.SetBool("Falling", true);
+            enemyCC.Move(Physics.gravity * Time.deltaTime);
         }
-    }
-    */
+        else isGrounded = true;
 
-    void ResetAnimAttackMelee()
-    {
-        anim.SetBool("Shoot_Melee", false);
-        shooter.MeleeHit();
-    }
-
-    void Update()
-    {
-        if (enemyFollows)
-        {
-            if (Vector3.Distance(transform.position, enemyTarget.transform.position) >= 2)
+        if (enemyTarget && enemyTarget!=this) {
+            this.transform.LookAt(enemyTarget.transform);
+            if (canMove)
             {
-                move = transform.right * 1 + transform.forward * 1;
-                EnemyCC.Move(move * movSpeed * Time.deltaTime);
-
-                anim.SetFloat("VelX", 1);
-                anim.SetFloat("VelZ", 1);
-            }
-            else
-            {
-                anim.SetFloat("VelX", 0);
-                anim.SetFloat("VelZ", 0);
-
-                //Fire
-                if (!anim.GetBool("Shoot_Melee"))
+                if (Vector3.Distance(this.transform.position, enemyTarget.transform.position) >= 1.5f)
                 {
-                    anim.SetBool("Shoot_Melee", true);
-                    Invoke("ResetAnimAttackMelee", 3.2f);
-                    print(this.gameObject.name + " attacked.");
+                    enemyCC.Move(this.transform.forward * movSpeed * Time.deltaTime);
+                }
+            }
+            if (Vector3.Distance(this.transform.position, enemyTarget.transform.position) < 1.5f)
+            {
+                //StartAnim("Shoot_Melee");
+                if (shooter.MeleeHit())
+                {
+                    audioShoot.Play();
                 }
             }
         }
+    }
 
-        this.transform.LookAt(enemyTarget.transform);
+    private bool OnGround(GameObject obj)
+    {
+        if (Physics.Raycast(obj.transform.position, Vector3.down, distToGround))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void AggroTarget(GameObject newTarget)
+    {
+        if (newTarget)
+        {
+            enemyTarget = newTarget;
+        }
     }
 }

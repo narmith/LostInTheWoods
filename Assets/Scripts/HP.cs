@@ -4,30 +4,25 @@ using UnityEngine.SceneManagement;
 public class HP : MonoBehaviour
 {
     public bool godMode = false;
-    public int maxHealth = 100;
+    private int maxHealth = 100;
     public int currentHealth = 100;
-    public HealthBar healthBar;
+    HealthBar healthBar;
     EnemyManager enemyManager;
 
     void Start()
     {
-        currentHealth = maxHealth;
-        if (healthBar != null)
+        if (this.gameObject.CompareTag("Player"))
         {
-            healthBar.setMaxHealth(maxHealth);
+            healthBar = FindObjectOfType<HealthBar>();
+            if (!healthBar) { print("Error: HealthBar does not exist!"); }
+            else healthBar.setMaxHealth(maxHealth);
         }
 
-        //check EnemyManager existe y si tiene su componente
-        GameObject manager = GameObject.Find("EnemyManager");
-        if (manager == null) { print("No existe el GameObject: EnemyManager."); }
-        else
-        {
-            if (manager.GetComponent<EnemyManager>() == null) { print("No existe el componente: EnemyManager."); }
-            else { enemyManager = manager.GetComponent<EnemyManager>(); }
-        }
+        enemyManager = FindObjectOfType<EnemyManager>();
+        if (!enemyManager) { print("Error: EnemyManager does not exist!"); }
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (currentHealth <= 0)
         {
@@ -39,16 +34,75 @@ public class HP : MonoBehaviour
             {
                 SceneManager.LoadScene("GameOver");
             }
+            //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
+        }
 
-            Destroy(this.gameObject);
+        if (healthBar)
+        {
+            healthBar.setHealth(currentHealth);
         }
     }
 
-    public void TakeDamage(int damage)
+    public bool GodMode() // Ask if this has GodMode enabled.
     {
-        if (!godMode)
+        return godMode;
+    }
+    public void GodMode(bool state) // Set GodMode ON or OFF.
+    {
+        godMode=state;
+    }
+    public int Health()
+    {
+        return currentHealth;
+    }
+    public void Health(int newHealth) // Change the current health to a new value.
+    {
+        currentHealth = newHealth;
+    }
+    public int MaxHealth()
+    {
+        return maxHealth;
+    }
+    public void MaxHealth(int newMaxHealth) // Change the max health to a new value.
+    {
+        maxHealth = newMaxHealth;
+    }
+    public int HealHP(int HealingQty) // Heal the current health by value.
+    {
+        if (HealingQty > 0) // Someone is actually healing you, right? 
         {
-            currentHealth -= damage;
+            if (currentHealth > 0) // You are not already dead, are you?
+            {
+                currentHealth += HealingQty;
+                if(currentHealth > maxHealth) // Over-healing check
+                {
+                    int finalHealQty = (currentHealth - maxHealth - HealingQty);
+                    currentHealth = maxHealth;
+                    return finalHealQty;
+                }
+                else return HealingQty;
+            }
         }
+        return 0;
+    }
+    public int DamageHP(int DmgQty)
+    {
+        if (!godMode && DmgQty > 0 && currentHealth > 0)
+        {
+            int finalDmgQty = currentHealth - DmgQty;
+            if (finalDmgQty <= 0)
+            {
+                finalDmgQty = currentHealth;
+                currentHealth = 0;
+                return finalDmgQty;
+            }
+            else
+            {
+                currentHealth -= DmgQty;
+                return DmgQty;
+            }
+        }
+        return 0;
     }
 }

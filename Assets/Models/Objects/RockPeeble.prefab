@@ -126,7 +126,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.35
   m_Center: {x: 0, y: 0, z: 0}
@@ -144,9 +144,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactEffect: {fileID: 6306841789031013633, guid: 6805dcbb3d1f4bf43aa842d7a3b9131a,
     type: 3}
-  damage: 5
-  Speed: 30
+  damage: 50
+  speed: 20
   rg: {fileID: 4097512152877556577}
+  audioFx: {fileID: 0}
 --- !u!54 &4097512152877556577
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -170,7 +171,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

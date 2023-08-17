@@ -1,24 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class EnemyManager : MonoBehaviour
 {
-    public int deadCount = 0;
+    public int killCount = 0;
     public int winCondition = 3;
 
     public void EnemyIsDead()
     {
-        deadCount += 1;
-        print("Se han matado " + deadCount + "/" + winCondition + " enemigos!");
+        killCount += 1;
     }
 
     void Update()
     {
-        if (deadCount >= winCondition)
+        if (killCount >= winCondition)
         {
-            print("Se han matado " + deadCount + "/" + winCondition + " enemigos!");
+            //print("You have killed " + deadCount + "/" + winCondition + " enemies!");
             SceneManager.LoadScene("Win");
         }
     }

@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -92,6 +93,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!114 &4339803324018112747
@@ -103,10 +105,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7437166599758401363}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e53d4511def195f498193df821f9287b, type: 3}
+  m_Script: {fileID: 11500000, guid: 30888e51b5d133644b55bc446d06632e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeAlive: 2.5
+  movSpeed: 0
+  timeAlive: 4
 --- !u!82 &3474632724975585306
 AudioSource:
   m_ObjectHideFlags: 0
@@ -116,9 +119,9 @@ AudioSource:
   m_GameObject: {fileID: 7437166599758401363}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 6065781154439987968, guid: b16d262fe6d640d48a6f30903906e62d,
+  OutputAudioMixerGroup: {fileID: 6065781154439987968, guid: 52369a01f9fdce140964e61e32fece6f,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: c14454b22cd28aa4c8a10f194e828845, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 127e04f47f623d340b1e736ae3bb76da, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 3
