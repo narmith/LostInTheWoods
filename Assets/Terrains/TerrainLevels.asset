@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c509dbaa7b6f416409e3195321a2187e, type: 3}
+  m_Name: TerrainLevels
+  m_EditorClassIdentifier: 
+  PaletteLayers:
+  - {fileID: 8574412962073106934, guid: cfb11d1af0cc6954ab4dec5b62c2db95, type: 2}
+  - {fileID: 8574412962073106934, guid: 4de779497d0430e41a28953f6448cbe9, type: 2}
+  - {fileID: 8574412962073106934, guid: 168918382544da84aa44f75b393990b3, type: 2}
+  - {fileID: 8574412962073106934, guid: 975e3ba5e25452d499ed4c2b947c76a9, type: 2}
+  - {fileID: 8574412962073106934, guid: 2ec3e135855e7084bb7ca76fe973863c, type: 2}
