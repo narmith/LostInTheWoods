@@ -4,9 +4,8 @@ public class SimpleLookAt : MonoBehaviour
 {
     public GameObject target;
 
-    void LateUpdate()
+    void Update()
     {
         if (target) { this.transform.LookAt(target.transform); }
-        else GameObject.FindGameObjectWithTag("Player");
     }
 }

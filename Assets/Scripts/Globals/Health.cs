@@ -33,6 +33,7 @@ public class Health : MonoBehaviour
         }
     }
 
+    /*
     void Update()
     {
         if (currentHealth <= 0) 
@@ -76,6 +77,8 @@ public class Health : MonoBehaviour
                 }
         }
     }
+    */
+
     public void TakeDamage(int damage)
     {
         if (!godMode)

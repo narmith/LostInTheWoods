@@ -2,57 +2,100 @@
 
 public class ZombieMovement : MonoBehaviour
 {
-    private GameObject enemyTarget;
-    private CharacterController enemyCC;
-    private Animator enemyAnim;
+    private GameObject charTarget;
+    private CharacterController charController;
+    private Animator charAnims;
     public AudioSource audioShoot;
     public AudioSource audioWalk;
     private FPSShooter shooter;
 
-    //public bool enemyFollows = true;
-    public bool canMove = true;
-    public float movSpeed = 4f;
-    public float jumpHeight = 10f;
-    public bool isGrounded;
-    public float distToGround = 0.13f;
+    private bool canMove = true;
+    private float movSpeed = 4f;
+    //private float jumpHeight = 10f;
+    private bool isGrounded;
+    private float distToGround = 1.13f;
+
+    private float actionCooldown = 0;
 
     void Start()
     {
-        enemyCC = GetComponent<CharacterController>();
-        enemyAnim = GetComponent<Animator>();
-        shooter = GetComponent<FPSShooter>();
+        charController = this.gameObject.GetComponent<CharacterController>();
+        charAnims = this.gameObject.GetComponent<Animator>();
+        shooter = this.gameObject.GetComponent<FPSShooter>();
     }
-
-    void FixedUpdate() { }
 
     void LateUpdate()
     {
         if (!OnGround(this.gameObject))
         {
             isGrounded = false;
-            //enemyAnim.SetBool("Falling", true);
-            enemyCC.Move(Physics.gravity * Time.deltaTime);
+            StartAnim("IsFalling");
+            charController.Move(Physics.gravity * Time.deltaTime);
+            //canMove = false;
         }
-        else isGrounded = true;
+        else
+        {
+            isGrounded = true;
+            //canMove = true;
+        }
 
-        if (enemyTarget && enemyTarget!=this) {
-            this.transform.LookAt(enemyTarget.transform);
-            if (canMove)
+        if (canMove) { getMovement(); }
+        actionCooldown -= Time.deltaTime;
+    }
+
+    private void getMovement()
+    {
+        if (charTarget && !(charTarget == this.gameObject))
+        {
+            this.transform.LookAt(charTarget.transform);
+            if (!hasActionCooldown())
             {
-                if (Vector3.Distance(this.transform.position, enemyTarget.transform.position) >= 1.5f)
+                if (canMove)
                 {
-                    enemyCC.Move(this.transform.forward * movSpeed * Time.deltaTime);
+                    if (Vector3.Distance(this.transform.position, charTarget.transform.position) >= 1.5f)
+                    {
+                        StartAnim("IsRunning");
+                        charController.Move(this.transform.forward * movSpeed * Time.deltaTime);
+                    }
                 }
-            }
-            if (Vector3.Distance(this.transform.position, enemyTarget.transform.position) < 1.5f)
-            {
-                //StartAnim("Shoot_Melee");
-                if (shooter.MeleeHit())
+                if (Vector3.Distance(this.transform.position, charTarget.transform.position) < 1.5f)
                 {
-                    audioShoot.Play();
+                    if (shooter.MeleeHit())
+                    {
+                        actionCooldown = 3f;
+                        StartAnim("Shoot_Melee");
+                        audioShoot.Play();
+                    }
                 }
             }
         }
+    }
+
+    private bool hasActionCooldown()
+    {
+        if(actionCooldown>0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void StartAnim(string animState)
+    {
+        ResetAnim();
+        charAnims.SetBool(animState, true); // Apply animation
+    }
+
+    private void ResetAnim()
+    {
+        if (isGrounded) { charAnims.SetBool("IsJumping", false); }
+        charAnims.SetBool("IsRunning", false);
+        charAnims.SetBool("RStrafe", false);
+        charAnims.SetBool("LStrafe", false);
+        charAnims.SetBool("IsFalling", false);
+        //charAnims.SetBool("Shoot_Arrow", false);
+        charAnims.SetBool("Shoot_Melee", false);
+        //charAnims.SetBool("Shoot_Rock", false);
     }
 
     private bool OnGround(GameObject obj)
@@ -68,7 +111,7 @@ public class ZombieMovement : MonoBehaviour
     {
         if (newTarget)
         {
-            enemyTarget = newTarget;
+            charTarget = newTarget;
         }
     }
 }

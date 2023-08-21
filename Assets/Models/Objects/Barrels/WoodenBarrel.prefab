@@ -175,7 +175,6 @@ GameObject:
   - component: {fileID: 4195254934053671598}
   - component: {fileID: 4195254934053671592}
   - component: {fileID: 4195254934053671593}
-  - component: {fileID: 4195254934053671595}
   m_Layer: 0
   m_Name: WoodenBarrel
   m_TagString: Destructible
@@ -197,7 +196,7 @@ Transform:
   m_Children:
   - {fileID: 6165768223164143624}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &151213992093447442
 MeshFilter:
@@ -320,24 +319,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 50, y: 100, z: 50}
   m_Center: {x: 0, y: 50, z: 0}
---- !u!114 &4195254934053671595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5267354716023930167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95035a89855f1ba4692610a2b1751d69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  godMode: 0
-  maxHealth: 20
-  currentHealth: 20
-  healthBar: {fileID: 0}
-  audioLowHealth: {fileID: 0}
-  audioTakeDmg: {fileID: 8879338284102466403}
-  audioGetHeal: {fileID: 0}
-  dropWhenDead: {fileID: 6436469159759739126, guid: a87e081ede5202d4f85e25449da6128d,
-    type: 3}

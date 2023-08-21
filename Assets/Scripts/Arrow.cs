@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Arrow : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     public GameObject impactEffect;
     public int impactDmg = 10;

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class FPSShooter : MonoBehaviour
 {
@@ -22,20 +21,12 @@ public class FPSShooter : MonoBehaviour
         meleeCd = 0f;
     }
 
-    public void LateUpdate()
+    public void Update()
     {
-        if (arrowCd > 0)
-        {
-            arrowCd -= 1 * Time.deltaTime;
-        }
-        if (rockCd > 0)
-        {
-            rockCd -= 1 * Time.deltaTime;
-        }
-        if (meleeCd > 0)
-        {
-            meleeCd -= 1 * Time.deltaTime;
-        }
+        float deltaT = 1 * Time.deltaTime;
+        if (arrowCd > 0) { arrowCd -= deltaT; }
+        if (rockCd > 0) { rockCd -= deltaT; }
+        if (meleeCd > 0) { meleeCd -= deltaT; }
     }
 
     public bool ShootArrow()
@@ -80,10 +71,10 @@ public class FPSShooter : MonoBehaviour
                         {
                             counter_punches++;
                             int dmgDone = _targetHP.DamageHP(8);
-                            print(_target.transform.gameObject.name + " got hit by " + this.gameObject.name + ". (Melee -" + dmgDone + ").");
+                            //print(_target.transform.gameObject.name + " got hit by " + this.gameObject.name + ". (Melee -" + dmgDone + ").");
                         }
                     }
-                    print(_target.transform.gameObject.name + " got hit by " + this.gameObject.name);
+                    //print(_target.transform.gameObject.name + " got hit by " + this.gameObject.name);
                 }
                 meleeCd = defaultCd - 3f;
                 return true;

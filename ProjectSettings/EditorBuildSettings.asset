@@ -17,4 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameLevel.unity
     guid: 15d4f16d56f68794381e44ad7356ced9
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 22f233c397b0d0f4c8f871874e8f9f6a,
+      type: 2}

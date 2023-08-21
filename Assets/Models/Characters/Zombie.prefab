@@ -119,7 +119,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: e90d310eb0bfa034bb58e9e0448339bd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -181,11 +181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioShoot: {fileID: 8811556348699935328}
   audioWalk: {fileID: 5046857966521302318}
-  canMove: 1
-  movSpeed: 2
-  jumpHeight: 10
-  isGrounded: 0
-  distToGround: 1
 --- !u!114 &370930708987776729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,9 +201,6 @@ MonoBehaviour:
   arrowCd: 0
   rockCd: 0
   meleeCd: 0
-  inRange: {fileID: 0}
-  inTagOk: {fileID: 0}
-  inHpOk: {fileID: 0}
 --- !u!82 &5046857966521302318
 AudioSource:
   m_ObjectHideFlags: 0

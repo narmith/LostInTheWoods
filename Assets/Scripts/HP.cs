@@ -22,7 +22,7 @@ public class HP : MonoBehaviour
         if (!enemyManager) { print("Error: EnemyManager does not exist!"); }
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (currentHealth <= 0)
         {
