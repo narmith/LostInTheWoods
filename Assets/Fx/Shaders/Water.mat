@@ -25,16 +25,19 @@ Material:
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
+  m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
+  - _SPECULAR_SETUP
   - _SURFACE_TYPE_TRANSPARENT
+  m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 3010
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -44,7 +47,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SecondaryNormal:
-        m_Texture: {fileID: 2800000, guid: 840f01c3759401e4f879f93b89ba5921, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4e54dbbe57cab8544bc73689b5389215, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -61,32 +64,41 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 1
+    - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _BUILTIN_AlphaClip: 0
+    - _BUILTIN_Blend: 0
+    - _BUILTIN_CullMode: 2
+    - _BUILTIN_DstBlend: 0
     - _BUILTIN_QueueControl: -1
     - _BUILTIN_QueueOffset: 0
+    - _BUILTIN_SrcBlend: 1
+    - _BUILTIN_Surface: 0
+    - _BUILTIN_ZTest: 4
+    - _BUILTIN_ZWrite: 1
+    - _BUILTIN_ZWriteControl: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _CastShadows: 0
-    - _Cull: 2
-    - _Depth: 0.2
+    - _CastShadows: 1
+    - _Cull: 0
+    - _Depth: 1
     - _Displacement: 1
     - _DstBlend: 10
     - _NormalStrength: 0.3
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: 10
     - _ReceiveShadows: 1
     - _Smoothness: 0.3
     - _SrcBlend: 1
-    - _Strenght: 0.2
+    - _Strenght: 4
     - _Surface: 1
-    - _WorkflowMode: 1
+    - _WorkflowMode: 0
     - _ZTest: 4
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _DeepColor: {r: 0, g: 0.39215687, b: 0.5882353, a: 0.89411765}
-    - _ShallowColor: {r: 0, g: 0.5882353, b: 0.5882353, a: 0.54901963}
+    - _DeepColor: {r: 0, g: 0.47058824, b: 0.5882353, a: 0.7058824}
+    - _ShallowColor: {r: 0, g: 0.5882353, b: 0.5882353, a: 0.5882353}
   m_BuildTextureStacks: []
 --- !u!114 &7585427264245681387
 MonoBehaviour:
