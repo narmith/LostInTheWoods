@@ -1,4 +1,4 @@
-# Suvival3DGame
+# LostInTheWoods
 Simple 3D survival game made during a technical course.
 
 <br>
