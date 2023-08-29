@@ -23,6 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1800007964127452110}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,7 +33,6 @@ Transform:
   - {fileID: 2060620296635937849}
   - {fileID: 2744376793054244954}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2034192726171170628
 PrefabInstance:
@@ -46,6 +46,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WoodenBarrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267354716023930167, guid: 207cf8eaacbd88b459fac586ef18e65f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Object
       objectReference: {fileID: 0}
     - target: {fileID: 9169960974831275812, guid: 207cf8eaacbd88b459fac586ef18e65f,
         type: 3}
@@ -126,6 +131,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WoodenBarrel (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5267354716023930167, guid: 207cf8eaacbd88b459fac586ef18e65f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Object
+      objectReference: {fileID: 0}
     - target: {fileID: 9169960974831275812, guid: 207cf8eaacbd88b459fac586ef18e65f,
         type: 3}
       propertyPath: m_RootOrder
@@ -204,6 +214,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WoodenBarrel (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5267354716023930167, guid: 207cf8eaacbd88b459fac586ef18e65f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Object
       objectReference: {fileID: 0}
     - target: {fileID: 9169960974831275812, guid: 207cf8eaacbd88b459fac586ef18e65f,
         type: 3}

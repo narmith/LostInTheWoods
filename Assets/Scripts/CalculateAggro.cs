@@ -2,19 +2,18 @@ using UnityEngine;
 
 public class CalculateAggro : MonoBehaviour
 {
-    ZombieMovement zombie;
+    Ninja ninja;
 
     private void Start()
     {
-        zombie = GetComponentInParent<ZombieMovement>();
+        ninja = GetComponentInParent<Ninja>();
     }
 
     public void OnTriggerEnter(Collider otherColl)
     {
         if (otherColl.CompareTag("Player"))
         {
-            zombie.AggroTarget(otherColl.gameObject);
-            //print(this.transform.parent.name + " detected " + otherColl.name + ".");
+            ninja.AggroTarget(otherColl.gameObject);
         }
     }
 
@@ -22,7 +21,7 @@ public class CalculateAggro : MonoBehaviour
     {
         if (otherColl.CompareTag("Player"))
         {
-            zombie.AggroTarget(zombie.gameObject);
+            ninja.AggroTarget(ninja.gameObject);
         }
     }
 }
