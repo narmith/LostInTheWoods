@@ -24,13 +24,18 @@ public class Ninja : Creature
                 }
                 if (Vector3.Distance(this.transform.position, creatureTarget.transform.position) < 1.5f)
                 {
-                    ShootMelee();
+                    IsAttacking();
                 }
             }
         }
     }
 
-    protected bool ShootMelee()
+    protected void IsAttacking()
+    {
+        ShootMelee();
+    }
+
+    protected void ShootMelee()
     {
         actionCooldown = 3f;
         StartAnim("Shoot_Melee");
@@ -38,7 +43,6 @@ public class Ninja : Creature
         {
             shootFx.Play();
         }
-        return true;
     }
 
     protected override void Death()

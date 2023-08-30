@@ -82,7 +82,6 @@ abstract public class Creature : MonoBehaviour
     virtual protected bool IsGrounded()
     {
         return creatureController.isGrounded;
-        //return Physics.Raycast(transform.position, Vector3.down, 1f, 1 << LayerMask.NameToLayer("Ground"));
     }
 
     virtual public void AggroTarget(GameObject newTarget)

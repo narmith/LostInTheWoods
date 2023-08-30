@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class Player : Creature
 {
@@ -7,7 +8,7 @@ public class Player : Creature
     private float camYaw = 0f;
     public float camSpeed = 300f;
     public Transform shootPointer;
-    private bool buildMode = false;
+    private int actionModeSelected = 0;
     private bool pauseState = false;
 
     override protected void Start()
@@ -68,11 +69,6 @@ public class Player : Creature
     {
         base.GetActions();
 
-        // memo: use for jump effect!!
-        //public float _y = 0f;
-        //_y += Time.deltaTime * 5f;
-        //_y = Mathf.Clamp(_y, 9.81f, 0.1f);
-
         if (!HasActionCooldown() && canMove)
         {
             // Movement keys
@@ -115,8 +111,7 @@ public class Player : Creature
         CameraUpdate(direction != Vector3.zero);
         BodyRotation();
 
-        IsShooting();
-        IsBuildModeActive();
+        EvaluatePlayerActions();
     }
 
     protected void CameraUpdate(bool isMoving)
@@ -148,7 +143,6 @@ public class Player : Creature
             shootPointer.rotation.Set(0, 0, 0, 1);
             creatureTarget = null;
         }
-        
 
         if (playerCam)
         {
@@ -170,8 +164,22 @@ public class Player : Creature
         this.transform.Rotate(Vector3.up * camYaw);
     }
 
+    private void IsFirstPersonActive(bool fps)
+    {
+        if (fps)
+        {
+            playerCam.transform.localPosition = shootPointer.transform.localPosition;
+        }
+        else playerCam.transform.localPosition = new Vector3(0, 1f, -2f);
+    }
+
     protected Vector3 HasJumped(Vector3 currentDir)
     {
+        // memo: use for jump effect!!
+        //public float _y = 0f;
+        //_y += Time.deltaTime * 5f;
+        //_y = Mathf.Clamp(_y, 9.81f, 0.1f);
+
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
             if (walkFx.isPlaying) { walkFx.Stop(); }
@@ -182,7 +190,59 @@ public class Player : Creature
         else return Vector3.zero;
     }
 
-    protected bool IsShooting()
+
+    /// <summary>
+    /// ACTIONS
+    /// </summary>
+
+    private void EvaluatePlayerActions()
+    {
+        /* 0 = Idle mode
+         * 1-20 = Attack mode (Attack with Melee or Ranged weapons)
+         * 22 = Build mode (Aim then grab/interact with world objects or build things)
+         * 32 = Inventory Build Mode
+         * 42 = Inventory mode (UI/Inventory)
+         * 99 = Terrain mode (Change the terrain with a tool, similar to Attack mode)
+        */
+
+        if (actionModeSelected != 22 || actionModeSelected != 32) // Do any of these unless Build Mode is Active
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) // Should be hotkeys 1-9 for combat items
+            {
+                if (actionModeSelected != 1)
+                {
+                    actionModeSelected = 1;
+                    if (!IsAttacking()) { actionModeSelected = 0; }
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.I)) // Should bring UI/Inventory 
+            {
+                if (actionModeSelected != 42)
+                {
+                    actionModeSelected = 42;
+                    if (!IsInventorying()) { actionModeSelected = 0; }
+                }
+            }
+        }
+        else if (actionModeSelected == 22 || actionModeSelected == 32 || Input.GetKeyDown(KeyCode.B))
+        {
+            if (actionModeSelected != 32 || actionModeSelected != 22)
+            {
+                actionModeSelected = 22;
+                if (!IsGrabbing()) { actionModeSelected = 0; }
+            }
+            else if (actionModeSelected == 32 || Input.GetKeyDown(KeyCode.I)) // Should bring UI/Build options 
+            {
+                if (actionModeSelected != 32)
+                {
+                    actionModeSelected = 32;
+                    if (!IsBuilding()) { actionModeSelected = 22; }
+                }
+            }
+        }
+    }
+
+    protected bool IsAttacking()
     {
         if (Input.GetKey(KeyCode.Mouse1))
         {
@@ -207,27 +267,28 @@ public class Player : Creature
             {
                 shootFx.Play();
             }
-            return true;
         }
-
         return false;
     }
 
-    private void IsFirstPersonActive(bool fps)
+    private bool IsGrabbing()
     {
-        if (fps)
-        {
-            playerCam.transform.localPosition = shootPointer.transform.localPosition;
-        }
-        else playerCam.transform.localPosition = new Vector3(0, 1f, -2f);
+        return false;
     }
 
-    private void IsBuildModeActive()
+    private bool IsInventorying()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            buildMode = !buildMode;
-        }
+        // Open/Close Inventory Selection UI
+        // Select/use items to consume or drop
+        return false;
+    }
+
+    private bool IsBuilding()
+    {
+        // Open/Close Build Selection UI
+        // Select item to build
+        // Build to Inventory or drop into world to build with Shooting Mode (1)
+        return false;
     }
 
 }
