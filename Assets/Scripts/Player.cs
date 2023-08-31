@@ -22,7 +22,7 @@ public class Player : Creature
             DontDestroyOnLoad(gameObject);
         }
 
-        if (StaticGlobals.GodMode) { GetComponent<Health>().godMode = true; }
+        if (StaticGlobals.GodMode) { GetComponent<HP>().godMode = true; }
         if (!TryGetComponent(out grabObjects)) { Debug.Log("ERROR!"); }
         //if (!TryGetComponent(out shootPointer)) { Debug.Log("ERROR!"); }
         shootPointer = shooter.shootPoint.transform;

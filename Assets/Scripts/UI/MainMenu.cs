@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("Nivel1");
+        SceneManager.LoadScene("World");
     }
 
     public void QuitGame()

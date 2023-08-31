@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +15,8 @@ public class GameManager : MonoBehaviour
         instance = this;
         //SceneManager.sceneLoaded += LoadState;
         DontDestroyOnLoad(gameObject);
+
+        Application.targetFrameRate = 60;
     }
 
     // References
