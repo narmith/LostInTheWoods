@@ -1,31 +1,29 @@
 ﻿using UnityEngine;
-using UnityEngine.UIElements;
 
-public class LineOfSight : MonoBehaviour
+public class GrabObjects : MonoBehaviour
 {
     private RaycastHit vision;
-    public float hitRange;
     private Transform grabbedTransform;
     private Transform lastParent;
     private Rigidbody grabbedRigidbody;
     private Collider grabbedCollider;
     private GameObject _lastGrabbedGameObject;
-    public bool isGrabbing;
     private bool hadCollider;
     private bool lastTriggerState;
     private bool hadRigidbody;
     private bool lastKinematicState;
+    private float mouseDelta = 0;
+    private Color targetOriginalColor;
 
-    float mouseDelta = 0;
-
-
-
-    public Color targetOriginalColor;
+    private bool tryToGrab;
+    private float hitRange;
+    private bool isGrabbing;
 
     private void Start()
     {
         hitRange = 4f;
         isGrabbing = false;
+        tryToGrab = false;
         hadCollider = false;
         lastTriggerState = false;
         hadRigidbody = false;
@@ -47,7 +45,7 @@ public class LineOfSight : MonoBehaviour
                 else grabbedTransform.Rotate(new Vector3(0, 1, 0), mouseDelta * 10f);
             }
 
-            if (Input.GetKey(KeyCode.Mouse1) && Input.GetKeyDown(KeyCode.E))
+            if (tryToGrab)
             {
                 if (hadCollider)
                 {
@@ -64,6 +62,7 @@ public class LineOfSight : MonoBehaviour
                 grabbedTransform.SetParent(lastParent);
                 grabbedTransform = null;
                 isGrabbing = false;
+                tryToGrab = false;
             }
         }
         else if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out vision, hitRange))
@@ -82,14 +81,13 @@ public class LineOfSight : MonoBehaviour
 
             if (vision.collider.CompareTag("Object"))
             {
-                if (Input.GetKey(KeyCode.Mouse1) && Input.GetKeyDown(KeyCode.E))
+                if (tryToGrab)
                 {
-                    Debug.Log("Grabbed: " + vision.transform.name);
-
                     grabbedTransform = vision.transform;
                     lastParent = grabbedTransform.parent;
                     grabbedTransform.SetParent(Camera.main.transform);
                     isGrabbing = true;
+                    tryToGrab = false;
 
                     if (grabbedTransform.TryGetComponent<Collider>(out grabbedCollider))
                     {
@@ -144,5 +142,22 @@ public class LineOfSight : MonoBehaviour
                 _target.gameObject.GetComponent<Renderer>().material.color = targetOriginalColor;
             }
         }
+    }
+
+    public bool IsGrabbing()
+    {
+        return isGrabbing;
+    }
+    public void Interact()
+    {
+        tryToGrab = true;
+    }
+    public float GrabRange()
+    {
+        return hitRange;
+    }
+    public void ChangeGrabRange(float dist)
+    {
+        hitRange = dist;
     }
 }

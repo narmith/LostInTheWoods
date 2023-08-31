@@ -2,31 +2,34 @@ using UnityEngine;
 
 abstract public class Creature : MonoBehaviour
 {
-    public GameObject creatureTarget;
     protected CharacterController creatureController;
     protected Animator creatureAnims;
     protected FPSShooter shooter;
-
     protected float actionCooldown = 0;
     protected bool canShoot = false;
     protected bool canMove = false;
+    protected bool canAnimate = false;
     protected Vector3 direction = Vector3.zero;
 
+    public GameObject creatureTarget;
     public bool isGrounded;
     public float movSpeed = 4f;
     public float jumpHeight = 10f;
     public AudioSource shootFx;
-    public AudioSource walkFx;
+    public AudioSource hitFx;
+    public AudioSource hitMissFx;
+    public AudioSource getHitFx;
+    public AudioSource runFx;
 
     // Loot when killed
     public int xpGiven = 10;
     public float moneyDropRatio = 0.2f;
 
-    protected virtual void Start()
+    virtual public void Start()
     {
-        if (creatureController = this.gameObject.GetComponent<CharacterController>()) { canMove = true; }
-        creatureAnims = this.gameObject.GetComponent<Animator>();
-        if (shooter = this.gameObject.GetComponent<FPSShooter>()) { canShoot = true; }
+        if (TryGetComponent(out creatureController)) { canMove = true; }
+        if (TryGetComponent(out creatureAnims)) { canAnimate = true; }
+        if (TryGetComponent(out shooter)) { canShoot = true; }
     }
 
     virtual public void Update()
@@ -40,7 +43,7 @@ abstract public class Creature : MonoBehaviour
     {
         if (direction == Vector3.zero)
         {
-            if (walkFx.isPlaying) { walkFx.Stop(); }
+            if (runFx.isPlaying) { runFx.Stop(); }
             ResetAnim();
         }
 
@@ -63,8 +66,10 @@ abstract public class Creature : MonoBehaviour
 
     virtual protected void StartAnim(string animState)
     {
-        ResetAnim();
-        creatureAnims.SetBool(animState, true); // Apply animation
+        if (!canAnimate) return;
+
+        ResetAnim(); // Reset any previous animation
+        creatureAnims.SetBool(animState, true); // Apply new animation
     }
 
     virtual protected void ResetAnim()
@@ -91,11 +96,18 @@ abstract public class Creature : MonoBehaviour
 
     void ReceiveDamage(Damage dmg)
     {
-        
+        if (getHitFx && !getHitFx.isPlaying) { getHitFx.Play(); }
     }
 
     protected virtual void Death()
     {
+        if (getHitFx && !getHitFx.isPlaying) { getHitFx.Play(); }
+        Invoke("SelfDestruct", 10f);
+    }
+
+    protected virtual void SelfDestruct()
+    {
         Destroy(this.gameObject);
     }
+
 }

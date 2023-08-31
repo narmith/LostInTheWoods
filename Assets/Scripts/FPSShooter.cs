@@ -55,7 +55,6 @@ public class FPSShooter : MonoBehaviour
         if (meleeCd <= 0)
         {
             RaycastHit _target;
-            //Debug.DrawRay(shootPoint.transform.position, shootPoint.transform.TransformDirection(Vector3.forward) * hitRange, Color.yellow);
             if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.TransformDirection(Vector3.forward), out _target, hitRange))
             {
                 if (!_target.transform.CompareTag(this.gameObject.tag))

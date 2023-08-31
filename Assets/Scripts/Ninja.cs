@@ -40,9 +40,8 @@ public class Ninja : Creature
         actionCooldown = 3f;
         StartAnim("Shoot_Melee");
         if (shooter.MeleeHit())
-        {
-            shootFx.Play();
-        }
+            hitFx.Play();
+        else hitMissFx.Play();
     }
 
     protected override void Death()
