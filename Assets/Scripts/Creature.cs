@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 abstract public class Creature : MonoBehaviour
 {
@@ -34,8 +35,14 @@ abstract public class Creature : MonoBehaviour
 
     virtual public void Update()
     {
+        
+    }
+
+    virtual public void FixedUpdate()
+    {
         isGrounded = creatureController.isGrounded;
-        if (actionCooldown >= 0) { actionCooldown -= Time.deltaTime; }
+        if (actionCooldown > 0) { actionCooldown -= Time.deltaTime; }
+        else actionCooldown = 0;
         GetActions();
     }
 
@@ -102,10 +109,10 @@ abstract public class Creature : MonoBehaviour
     protected virtual void Death()
     {
         if (getHitFx && !getHitFx.isPlaying) { getHitFx.Play(); }
-        Invoke("SelfDestruct", 10f);
+        Invoke(nameof(Despawn), 10f);
     }
 
-    protected virtual void SelfDestruct()
+    protected virtual void Despawn()
     {
         Destroy(this.gameObject);
     }

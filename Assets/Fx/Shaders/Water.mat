@@ -97,7 +97,7 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _DeepColor: {r: 0, g: 0.47058824, b: 0.5882353, a: 0.7058824}
+    - _DeepColor: {r: 0.15686275, g: 0.627451, b: 0.78431374, a: 0.7058824}
     - _ShallowColor: {r: 0, g: 0.5882353, b: 0.5882353, a: 0.5882353}
   m_BuildTextureStacks: []
 --- !u!114 &7585427264245681387

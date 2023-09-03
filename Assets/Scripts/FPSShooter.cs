@@ -18,18 +18,21 @@ public class FPSShooter : MonoBehaviour
         meleeCd = 0f;
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         float deltaT = 1 * Time.deltaTime;
         if (arrowCd > 0) { arrowCd -= deltaT; }
         if (meleeCd > 0) { meleeCd -= deltaT; }
     }
 
+    public bool CanHit() {  return meleeCd <= 0; }
+    public bool CanShoot() { return arrowCd <= 0; }
+
     public bool ShootArrow(Transform shootPointer)
     {
         if (prefabArrow && arrowCd <= 0)
         {
-            arrowCd = defaultCd - 1f;
+            arrowCd = 2f;
             counter_arrows++;
             GameObject _arrow = Instantiate(prefabArrow, shootPointer.position + shootPointer.forward, shootPointer.rotation);
             _arrow.gameObject.name = "(" + this.gameObject.name + ") Arrow " + counter_arrows;
@@ -41,7 +44,7 @@ public class FPSShooter : MonoBehaviour
     {
         if (prefabArrow && arrowCd <= 0)
         {
-            arrowCd = defaultCd - 1f;
+            arrowCd = 3f;
             counter_arrows++;
             GameObject _arrow = Instantiate(prefabArrow, shootPoint.transform.position + shootPoint.transform.forward, shootPoint.transform.rotation);
             _arrow.gameObject.name = "(" + this.gameObject.name + ") Arrow " + counter_arrows;
@@ -57,20 +60,12 @@ public class FPSShooter : MonoBehaviour
             RaycastHit _target;
             if (Physics.Raycast(shootPoint.transform.position, shootPoint.transform.TransformDirection(Vector3.forward), out _target, hitRange))
             {
-                if (!_target.transform.CompareTag(this.gameObject.tag))
-                {
-                    if (meleeCd <= 0)
-                    {
-                        if (_target.transform.TryGetComponent(out HP _targetHP))
-                        {
-                            int dmgDone = _targetHP.DamageHP(8);
-                        }
-                    }
-                }
-                meleeCd = defaultCd - 3f;
+                if (_target.transform.gameObject.GetInstanceID() != this.gameObject.GetInstanceID())
+                    if (_target.transform.TryGetComponent(out HP _targetHP)) { _targetHP.DamageHP(8); }
+                meleeCd = 2f;
                 return true;
             }
-            meleeCd = defaultCd - 3f;
+            meleeCd = 2f;
         }
         return false;
     }

@@ -43,6 +43,9 @@ public class GrabObjects : MonoBehaviour
                 if(Input.GetKey(KeyCode.LeftShift))
                     grabbedTransform.Rotate(new Vector3(1, 0, 1), mouseDelta * 10f);
                 else grabbedTransform.Rotate(new Vector3(0, 1, 0), mouseDelta * 10f);
+                
+                // Spin the object around the target at 20 degrees/second.
+                //grabbedTransform.RotateAround(grabbedTransform.position, Vector3.up, 20 * Time.deltaTime);
             }
 
             if (tryToGrab)

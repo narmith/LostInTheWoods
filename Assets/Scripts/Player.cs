@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Player : Creature
 {
+    public ActionBars actionsBarUI;
     private Camera playerCam;
     private Transform shootPointer;
     private GrabObjects grabObjects;
@@ -37,7 +39,7 @@ public class Player : Creature
 
         if (pauseState)
         {
-            Time.timeScale = 0f;
+            Time.timeScale = 0.1f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -59,6 +61,23 @@ public class Player : Creature
             //CanMove = false;
             //SceneManager.LoadScene("MainMenu");
         }
+    }
+
+    override public void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if (actionCooldown > 0)
+        {
+            actionsBarUI.action1Timer.fillAmount += (Time.deltaTime / actionCooldown);
+            actionsBarUI.action2Timer.fillAmount += (Time.deltaTime / actionCooldown);
+        }
+        else
+        {
+            actionsBarUI.action1Timer.fillAmount = 0;
+            actionsBarUI.action2Timer.fillAmount = 0;
+        }
+        
     }
 
     override protected void ResetAnim()
@@ -123,7 +142,7 @@ public class Player : Creature
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward) * hitRange, Color.yellow);
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.TransformDirection(Vector3.forward) * hitRange, out RaycastHit _target))
         {
-            Debug.Log(_target.transform.name);
+            //Debug.Log(_target.transform.name);
             if (!_target.transform.CompareTag(this.gameObject.tag))
             {
                 if (_target.transform.gameObject.tag == "Object" || _target.transform.gameObject.tag == "Enemy")
@@ -249,15 +268,30 @@ public class Player : Creature
         IsFPSActive(Input.GetKey(KeyCode.Mouse1));
     }
 
+    void PlaySound(AudioSource audioclip, float delayTime)
+    {
+        StartCoroutine(DoDelayed(audioclip, delayTime));
+    }
+    void PlaySound(AudioSource audioclip)
+    {
+        audioclip.Play();
+    }
+
+    IEnumerator DoDelayed(AudioSource audioclip, float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        PlaySound(audioclip);
+    }
+
     protected void IsAttacking()
     {
         if (IsFPSActive() && Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (shooter.ShootArrow(shootPointer))
             {
-                actionCooldown = 4f;
+                actionCooldown = 3f;
                 StartAnim("Shoot_Arrow");
-                shootFx.Play();
+                PlaySound(shootFx, 1.5f);
             }
         }
 
@@ -265,9 +299,12 @@ public class Player : Creature
         {
             actionCooldown = 2f;
             StartAnim("Shoot_Melee");
-            if (shooter.MeleeHit())
-                hitFx.Play();
-            else hitMissFx.Play();
+            if (shooter.CanHit())
+            {
+                if (shooter.MeleeHit())
+                    PlaySound(hitFx, 0.8f);
+                else PlaySound(hitMissFx, 0.8f);
+            }
         }
     }
 
