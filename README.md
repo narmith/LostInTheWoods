@@ -42,4 +42,38 @@ Everything looks better now!
 
 <br>
 
+***
+
+<br>
+
+Update 31-Aug-2023
+
+You can grab the first ever build here:
+
+<br>
+
+https://github.com/narmith/LostInTheWoods/raw/main/LostInTheWoods_FirstBuild.7z
+
+<br>
+
+Currently, you can:
+- Shoot your way out (must kill 5 guys to win).
+- Press 1 to zoom and shoot (melee and flunky arrows).
+- Press 0 to zoom and grab items (and move them around).
+- Also jump, but is also veery flunky.
+
+<br>
+
+And finally, you can exit with ALT + F4 as I may have forgotten to implement a "quick exit" game button.
+You can die and exit through the main menu though... just get clobbed to death by the angry mobs.
+
+<br>
+
+I promise to polish things up!
+
+<br>
+<br>
+<br>
+<br>
+
 Thanks for reading out!
