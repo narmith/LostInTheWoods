@@ -1,13 +1,14 @@
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 abstract public class Creature : MonoBehaviour
 {
     protected CharacterController creatureController;
     protected Animator creatureAnims;
     protected FPSShooter shooter;
+    protected HP hp;
     protected float actionCooldown = 0;
     protected bool canShoot = false;
+    protected bool canGetDamage = false;
     protected bool canMove = false;
     protected bool canAnimate = false;
     protected Vector3 direction = Vector3.zero;
@@ -31,6 +32,7 @@ abstract public class Creature : MonoBehaviour
         if (TryGetComponent(out creatureController)) { canMove = true; }
         if (TryGetComponent(out creatureAnims)) { canAnimate = true; }
         if (TryGetComponent(out shooter)) { canShoot = true; }
+        if (TryGetComponent(out hp)) { canGetDamage = true; }
     }
 
     virtual public void Update()
@@ -45,6 +47,8 @@ abstract public class Creature : MonoBehaviour
         else actionCooldown = 0;
         GetActions();
     }
+
+    virtual public float GetActionCooldown() { return actionCooldown; }
 
     virtual protected void GetActions()
     {

@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class Player : Creature
 {
-    public ActionBars actionsBarUI;
+    
     private Camera playerCam;
     private Transform shootPointer;
     private GrabObjects grabObjects;
     private float camPitch = 0f;
     private float camYaw = 0f;
-    private float camSpeed = 300f;
+    public float mouseSensitivity = 300f;
     private int actionSelected = 0;
-    private bool pauseState = false;
     private bool isFPSActive = false;
 
     override public void Start()
@@ -24,60 +23,24 @@ public class Player : Creature
             DontDestroyOnLoad(gameObject);
         }
 
-        if (StaticGlobals.GodMode) { GetComponent<HP>().godMode = true; }
+        StaticGlobals.MouseSensitivity = mouseSensitivity;
+        StaticGlobals.GodMode = hp.godMode;
+
         if (!TryGetComponent(out grabObjects)) { Debug.Log("ERROR!"); }
-        //if (!TryGetComponent(out shootPointer)) { Debug.Log("ERROR!"); }
-        shootPointer = shooter.shootPoint.transform;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    void PauseGame()
-    {
-        pauseState = !pauseState;
-
-        if (pauseState)
-        {
-            Time.timeScale = 0.1f;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Time.timeScale = 1.0f;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        if (!(shootPointer = shooter.shootPoint.transform)) { Debug.Log("ERROR!"); }
     }
 
     override public void Update()
     {
         base.Update();
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            PauseGame();
-            //CanMove = false;
-            //SceneManager.LoadScene("MainMenu");
-        }
     }
 
     override public void FixedUpdate()
     {
         base.FixedUpdate();
 
-        if (actionCooldown > 0)
-        {
-            actionsBarUI.action1Timer.fillAmount += (Time.deltaTime / actionCooldown);
-            actionsBarUI.action2Timer.fillAmount += (Time.deltaTime / actionCooldown);
-        }
-        else
-        {
-            actionsBarUI.action1Timer.fillAmount = 0;
-            actionsBarUI.action2Timer.fillAmount = 0;
-        }
         
+        GameManager.instance.RefreshUI();
     }
 
     override protected void ResetAnim()
@@ -127,8 +90,8 @@ public class Player : Creature
         }
 
         // Mouse transfromations
-        camPitch += Input.GetAxis("Mouse Y") * camSpeed * Time.deltaTime;
-        camYaw = Input.GetAxis("Mouse X") * camSpeed * Time.deltaTime;
+        camPitch += Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        camYaw = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         CameraUpdate(direction != Vector3.zero);
         BodyRotation();
 
@@ -145,7 +108,7 @@ public class Player : Creature
             //Debug.Log(_target.transform.name);
             if (!_target.transform.CompareTag(this.gameObject.tag))
             {
-                if (_target.transform.gameObject.tag == "Object" || _target.transform.gameObject.tag == "Enemy")
+                if (_target.transform.gameObject.CompareTag("Object") || _target.transform.gameObject.CompareTag("Enemy"))
                 {
                     shootPointer.LookAt(_target.transform);
                     creatureTarget = _target.transform.gameObject;
@@ -185,11 +148,17 @@ public class Player : Creature
         this.transform.Rotate(Vector3.up * camYaw);
     }
 
-    private bool IsFPSActive()
+    // Sound clips
+    void PlaySound(AudioSource audioclip) { audioclip.Play(); }
+    void PlaySound(AudioSource audioclip, float delayTime) { StartCoroutine(DoSoundDelayed(audioclip, delayTime)); }
+    IEnumerator DoSoundDelayed(AudioSource audioclip, float delaySeconds)
     {
-        return isFPSActive;
+        yield return new WaitForSeconds(delaySeconds);
+        PlaySound(audioclip);
     }
+    //
 
+    private bool IsFPSActive() { return isFPSActive; }
     private void IsFPSActive(bool fps)
     {
         if (fps)
@@ -206,16 +175,15 @@ public class Player : Creature
 
     protected Vector3 HasJumped(Vector3 currentDir)
     {
-        // memo: use for jump effect!!
-        //public float _y = 0f;
-        //_y += Time.deltaTime * 5f;
-        //_y = Mathf.Clamp(_y, 9.81f, 0.1f);
-
         if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
             if (runFx.isPlaying) { runFx.Stop(); }
             actionCooldown = 2f;
             StartAnim("IsJumping");
+
+            //float _y = 0f;
+            //_y += Time.deltaTime * 5f;
+            //_y = Mathf.Clamp(_y, 9.81f, 0.1f);
             return currentDir += Physics.gravity * -jumpHeight;
         }
         else return Vector3.zero;
@@ -266,21 +234,6 @@ public class Player : Creature
         }
 
         IsFPSActive(Input.GetKey(KeyCode.Mouse1));
-    }
-
-    void PlaySound(AudioSource audioclip, float delayTime)
-    {
-        StartCoroutine(DoDelayed(audioclip, delayTime));
-    }
-    void PlaySound(AudioSource audioclip)
-    {
-        audioclip.Play();
-    }
-
-    IEnumerator DoDelayed(AudioSource audioclip, float delaySeconds)
-    {
-        yield return new WaitForSeconds(delaySeconds);
-        PlaySound(audioclip);
     }
 
     protected void IsAttacking()
